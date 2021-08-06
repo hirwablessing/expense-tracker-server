@@ -19,7 +19,7 @@ module.exports.postCategory = asyncHandler(async (req, res, next) => {
   res.json({ succes: true, data: category });
 });
 
-module.exports.getMyCategories = asyncHandler(async (req, res, next) => {
+module.exports.getAllCategories = asyncHandler(async (req, res, next) => {
   let categories = await Category.find();
   if (!categories)
     return next(
@@ -41,7 +41,7 @@ module.exports.getOneCategory = asyncHandler(async (req, res, next) => {
   res.json({ success: true, data: category });
 });
 
-module.exports.updateMyCategory = asyncHandler(async (req, res, next) => {
+module.exports.updateOneCategory = asyncHandler(async (req, res, next) => {
   let updatedCategory = await Category.findByAndUpdate(
     req.params.id,
     req.body,

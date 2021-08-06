@@ -58,7 +58,7 @@ module.exports.getOneTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.updateTransaction = asyncHandler(async (req, res, next) => {
+module.exports.updateOneTransaction = asyncHandler(async (req, res, next) => {
   let updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: req.params.id, user: req.user._id },
     req.body,
@@ -73,7 +73,7 @@ module.exports.updateTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.deleteTransaction = asyncHandler(async (req, res, next) => {
+module.exports.deleteOneTransaction = asyncHandler(async (req, res, next) => {
   let deletedTransaction = await Transaction.findOneAndDelete({
     _id: req.params.id,
     user: req.user._id,
