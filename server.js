@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(cors());
 
 // importing routes
-const CategoryRoutes = require("./routes/CategoryRoutes");
-const TransactionRoutes = require("./routes/TransactionRoutes");
+// const CategoryRoutes = require("./routes/CategoryRoutes");
+// const TransactionRoutes = require("./routes/TransactionRoutes");
 
 app.get("/", (req, res) => {
   res.json({
@@ -24,8 +24,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api/categories", CategoryRoutes);
-app.use("/api/transactions", TransactionRoutes);
+// app.use("/api/categories", CategoryRoutes);
+// app.use("/api/transactions", TransactionRoutes);
 
 app.use(ErrorHandler);
 
