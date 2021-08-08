@@ -1,18 +1,23 @@
 const express = require("express");
 const {
-  postCategory,
-  getAllCategories,
-  getOneCategory,
-  updateOneCategory,
-  deleteOneCategory,
-} = require("../controllers/Category.controller");
+  postTransaction,
+  getAllTransactions,
+  getOneTransaction,
+  updateOneTransaction,
+  deleteOneTransaction,
+  getExpenses,
+  getIncomes,
+} = require("../controllers/Transaction.controller");
 
 const Router = express.Router();
 
-Router.route("/").post(postCategory).get(getAllCategories);
+Router.route("/").post(postTransaction).get(getAllTransactions);
 Router.route("/:id")
-  .get(getOneCategory)
-  .put(updateOneCategory)
-  .delete(deleteOneCategory);
+  .get(getOneTransaction)
+  .put(updateOneTransaction)
+  .delete(deleteOneTransaction);
+
+Router.route("/incomes").get(getIncomes);
+Router.route("/expenses").get(getExpenses);
 
 module.exports = Router;

@@ -21,11 +21,6 @@ const TransactionSchema = new mongoose.Schema({
   note: {
     type: String,
   },
-  category: {
-    type: mongoose.Schema.ObjectId,
-    required: [true, "Category of the transaction is required."],
-    ref: "Category",
-  },
   user: {
     type: mongoose.Schema.ObjectId,
     required: [true, "Transaction Creator is required"],
@@ -33,6 +28,6 @@ const TransactionSchema = new mongoose.Schema({
   },
 });
 
-TransactionSchema.index({ date: 1, note: 1, user: 1 }, { unique: true });
+TransactionSchema.index({ date: 1, user: 1 }, { unique: true });
 
 module.exports = mongoose.model("Transaction", TransactionSchema);

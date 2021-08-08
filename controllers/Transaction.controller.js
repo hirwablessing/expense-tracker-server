@@ -16,6 +16,15 @@ module.exports.postTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
+module.exports.getAllTransactions = asyncHandler(async (req, res, next) => {
+  let transactions = await Transaction.fid();
+
+  if (!transactions)
+    return next(new ErrorResponse("Failed while fetching your transactions"));
+
+  res.json({ success: true, data: transactions });
+});
+
 module.exports.getIncomes = asyncHandler(async (req, res, next) => {
   let transactions = await Transaction.find({
     type: "income",
