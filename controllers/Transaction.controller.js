@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Transaction = require("../models/Transaction.model");
 const ErrorResponse = require("../utils/ErrorResponse");
 
-module.exports.postTransaction = asyncHandler(async (req, res, next) => {
+const postTransaction = asyncHandler(async (req, res, next) => {
   let transaction = await Transaction.create({
     ...req.body,
     user: req.user._id,
@@ -16,7 +16,7 @@ module.exports.postTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.getAllTransactions = asyncHandler(async (req, res, next) => {
+const getAllTransactions = asyncHandler(async (req, res, next) => {
   let transactions = await Transaction.fid();
 
   if (!transactions)
@@ -25,7 +25,7 @@ module.exports.getAllTransactions = asyncHandler(async (req, res, next) => {
   res.json({ success: true, data: transactions });
 });
 
-module.exports.getIncomes = asyncHandler(async (req, res, next) => {
+const getIncomes = asyncHandler(async (req, res, next) => {
   let transactions = await Transaction.find({
     type: "income",
     user: req.user._id,
@@ -37,7 +37,7 @@ module.exports.getIncomes = asyncHandler(async (req, res, next) => {
   res.json({ success: true, data: transactions });
 });
 
-module.exports.getExpenses = asyncHandler(async (req, res, next) => {
+const getExpenses = asyncHandler(async (req, res, next) => {
   let expenses = await Transaction.find({
     type: "expense",
     user: req.user._id,
@@ -51,7 +51,7 @@ module.exports.getExpenses = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.getOneTransaction = asyncHandler(async (req, res, next) => {
+const getOneTransaction = asyncHandler(async (req, res, next) => {
   let transaction = await Transaction.findOne({
     _id: req.params.id,
     user: req.user._id,
@@ -67,7 +67,7 @@ module.exports.getOneTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.updateOneTransaction = asyncHandler(async (req, res, next) => {
+const updateOneTransaction = asyncHandler(async (req, res, next) => {
   let updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: req.params.id, user: req.user._id },
     req.body,
@@ -82,7 +82,7 @@ module.exports.updateOneTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.deleteOneTransaction = asyncHandler(async (req, res, next) => {
+const deleteOneTransaction = asyncHandler(async (req, res, next) => {
   let deletedTransaction = await Transaction.findOneAndDelete({
     _id: req.params.id,
     user: req.user._id,
@@ -97,3 +97,13 @@ module.exports.deleteOneTransaction = asyncHandler(async (req, res, next) => {
     data: deletedTransaction,
   });
 });
+
+export {
+  postTransaction,
+  getAllTransactions,
+  getIncomes,
+  getExpenses,
+  getOneTransaction,
+  updateOneTransaction,
+  deleteOneTransaction,
+};

@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const UserModel = require("../models/User.model");
 const ErrorResponse = require("../utils/ErrorResponse");
 
-module.exports.registerUser = asyncHandler(async (req, res, next) => {
+const registerUser = asyncHandler(async (req, res, next) => {
   let userData = ({ names, email, passwords } = req.body);
 
   // check uniqueness of email
@@ -18,7 +18,7 @@ module.exports.registerUser = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports.loginUser = asyncHandler(async (req, res, next) => {
+const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return next(new ErrorResponse("Enter email and password", 400));
@@ -38,7 +38,7 @@ module.exports.loginUser = asyncHandler(async (req, res, next) => {
   await sendTokenResponse(user, 200, res);
 });
 
-module.exports.updateUser = asyncHandler(async (req, res, next) => {
+const updateUser = asyncHandler(async (req, res, next) => {
   //Update user profile
   const userData = ({ names, email } = req.body);
   if (!userData.names && !userData.email) {
@@ -67,3 +67,9 @@ const sendTokenResponse = asyncHandler(async (user, statusCode, res) => {
     data: user,
   });
 });
+
+export{
+  registerUser,
+  loginUser,
+  updateduser
+}
