@@ -1,7 +1,11 @@
 const ErrorResponse = require("../utils/ErrorResponse");
 const ErrorHandler = (err, req, res, next) => {
   let error = err;
-  console.log("Error:".red.inverse + "  " + err);
+  // console.log("Error:".red.inverse + "  " + err.name);
+
+  if (err.name === "Error") {
+    return res.send("Error:".red.inverse + "  " + err.message);
+  }
 
   //mongoose bad objectId
   if (error.name === "CastError") {
