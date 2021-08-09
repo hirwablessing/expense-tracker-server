@@ -98,7 +98,7 @@ const deleteOneTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
-export {
+module.exports = {
   postTransaction,
   getAllTransactions,
   getIncomes,

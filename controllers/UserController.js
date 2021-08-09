@@ -68,8 +68,4 @@ const sendTokenResponse = asyncHandler(async (user, statusCode, res) => {
   });
 });
 
-export{
-  registerUser,
-  loginUser,
-  updateduser
-}
+module.exports = { registerUser, loginUser, updateUser };
