@@ -19,7 +19,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    console.log("try block", token, " ", process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded._id) {
@@ -36,7 +35,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
       next();
     }
   } catch (error) {
-    // console.log("error: ", error);
     return next(error);
   }
 });

@@ -17,7 +17,7 @@ const postTransaction = asyncHandler(async (req, res, next) => {
 });
 
 const getAllTransactions = asyncHandler(async (req, res, next) => {
-  let transactions = await Transaction.fid();
+  let transactions = await Transaction.find();
 
   if (!transactions)
     return next(new ErrorResponse("Failed while fetching your transactions"));
@@ -31,7 +31,7 @@ const getIncomes = asyncHandler(async (req, res, next) => {
     user: req.user._id,
   });
 
-  if (!transaction)
+  if (!transactions)
     return next(new ErrorResponse("Failed while fetching your incomes"));
 
   res.json({ success: true, data: transactions });
