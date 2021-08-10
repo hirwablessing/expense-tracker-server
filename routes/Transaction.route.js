@@ -5,8 +5,8 @@ const {
   getOneTransaction,
   updateOneTransaction,
   deleteOneTransaction,
-  getExpenses,
-  getIncomes,
+  getTotalExpenses,
+  getTotalIncomes,
 } = require("../controllers/Transaction.controller");
 const { protect } = require("../middlewares/Auth");
 
@@ -15,8 +15,8 @@ const Router = express.Router();
 Router.route("/")
   .post(protect, postTransaction)
   .get(protect, getAllTransactions);
-Router.route("/incomes").get(protect, getIncomes);
-Router.route("/expenses").get(protect, getExpenses);
+Router.route("/incomes").get(protect, getTotalIncomes);
+Router.route("/expenses").get(protect, getTotalExpenses);
 Router.route("/:id")
   .get(protect, getOneTransaction)
   .put(protect, updateOneTransaction)
@@ -28,7 +28,7 @@ Router.route("/:id")
 //   .put(updateOneTransaction)
 //   .delete(deleteOneTransaction);
 
-// Router.route("/incomes").get(getIncomes);
-// Router.route("/expenses").get(getExpenses);
+// Router.route("/incomes").get(getTotalIncomes);
+// Router.route("/expenses").get(getTotalExpenses);
 
 module.exports = Router;

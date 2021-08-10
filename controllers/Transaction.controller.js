@@ -25,60 +25,33 @@ const getAllTransactions = asyncHandler(async (req, res, next) => {
   res.json({ success: true, data: transactions });
 });
 
-const getIncomes = asyncHandler(async (req, res, next) => {
-  let transactions = await Transaction.find({
-    type: "income",
-    user: req.user._id,
+const getTotalIncomes = asyncHandler(async (req, res, next) => {
+  let incomes = await Transaction.aggregate([
+    { $match: { type: "income", user: req.user._id } },
+    { $group: { _id: null, total: { $sum: "$amount" } } },
+  ]);
+
+  if (!incomes) {
+    return next(new ErrorResponse("Getting incomes failed."));
+  }
+  res.json({
+    success: true,
+    data: incomes.total,
   });
-
-  if (!transactions)
-    return next(new ErrorResponse("Failed while fetching your incomes"));
-
-  res.json({ success: true, data: transactions });
 });
 
-const getExpenses = asyncHandler(async (req, res, next) => {
-  // let expenses = await Transaction.find({
-  //   type: "expense",
-  //   user: req.user._id,
-  // });
-
-  // let expenses = Transaction.aggregate([
-  //   {
-  //     $match: {
-  //       type: "expense",
-  //       user: req.user._id,
-  //     },
-  //   },
-  //   {
-  //     $sum: amount,
-  //   },
-  // ]);
-
-  let expenses = Transaction.aggregate(
-    {
-      $group: {
-        _id: "",
-        type: "",
-        amount: { $sum: "$amount" },
-      },
-    },
-    {
-      $project: {
-        _id: req.user._id,
-        type: "income",
-        amount: "$amount",
-      },
-    }
-  );
-  console.log("here are expenses", expenses);
+const getTotalExpenses = asyncHandler(async (req, res, next) => {
+  let expenses = await Transaction.aggregate([
+    { $match: { type: "expense", user: req.user._id } },
+    { $group: { _id: null, total: { $sum: "$amount" } } },
+  ]);
 
   if (!expenses) {
     return next(new ErrorResponse("Getting incomes failed."));
   }
   res.json({
     success: true,
-    data: expenses,
+    data: expenses.total,
   });
 });
 
@@ -132,8 +105,8 @@ const deleteOneTransaction = asyncHandler(async (req, res, next) => {
 module.exports = {
   postTransaction,
   getAllTransactions,
-  getIncomes,
-  getExpenses,
+  getTotalIncomes,
+  getTotalExpenses,
   getOneTransaction,
   updateOneTransaction,
   deleteOneTransaction,
