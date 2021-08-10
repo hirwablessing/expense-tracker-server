@@ -42,7 +42,7 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     {
-      id: this._id,
+      _id: this._id,
       names: this.names,
       email: this.email,
       password: this.password,
