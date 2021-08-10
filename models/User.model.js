@@ -43,6 +43,9 @@ UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     {
       id: this._id,
+      names: this.names,
+      email: this.email,
+      password: this.password,
     },
     process.env.JWT_SECRET,
     {
