@@ -3,7 +3,7 @@ const UserModel = require("../models/User.model");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 const registerUser = asyncHandler(async (req, res, next) => {
-  let userData = ({ names, email, passwords } = req.body);
+  let userData = ({ names, email, password } = req.body);
 
   // check uniqueness of email
   if (userData.email && (await UserModel.findOne({ email: userData.email }))) {

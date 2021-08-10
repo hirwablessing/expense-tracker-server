@@ -43,18 +43,34 @@ const getExpenses = asyncHandler(async (req, res, next) => {
   //   user: req.user._id,
   // });
 
-  let expenses = Transaction.aggregate([
+  // let expenses = Transaction.aggregate([
+  //   {
+  //     $match: {
+  //       type: "expense",
+  //       user: req.user._id,
+  //     },
+  //   },
+  //   {
+  //     $sum: amount,
+  //   },
+  // ]);
+
+  let expenses = Transaction.aggregate(
     {
-      $match: {
-        type: "expense",
-        user: req.user._id,
+      $group: {
+        _id: "",
+        type: "",
+        amount: { $sum: "$amount" },
       },
     },
     {
-      $sum: amount,
-    },
-  ]);
-
+      $project: {
+        _id: req.user._id,
+        type: "income",
+        amount: "$amount",
+      },
+    }
+  );
   console.log("here are expenses", expenses);
 
   if (!expenses) {
