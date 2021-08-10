@@ -38,10 +38,25 @@ const getIncomes = asyncHandler(async (req, res, next) => {
 });
 
 const getExpenses = asyncHandler(async (req, res, next) => {
-  let expenses = await Transaction.find({
-    type: "expense",
-    user: req.user._id,
-  });
+  // let expenses = await Transaction.find({
+  //   type: "expense",
+  //   user: req.user._id,
+  // });
+
+  let expenses = Transaction.aggregate([
+    {
+      $match: {
+        type: "expense",
+        user: req.user._id,
+      },
+    },
+    {
+      $sum: amount,
+    },
+  ]);
+
+  console.log("here are expenses", expenses);
+
   if (!expenses) {
     return next(new ErrorResponse("Getting incomes failed."));
   }

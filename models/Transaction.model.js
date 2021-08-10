@@ -28,6 +28,4 @@ const TransactionSchema = new mongoose.Schema({
   },
 });
 
-TransactionSchema.index({ date: 1, user: 1 }, { unique: true });
-
 module.exports = mongoose.model("Transaction", TransactionSchema);

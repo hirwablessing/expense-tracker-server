@@ -8,16 +8,28 @@ const {
   getExpenses,
   getIncomes,
 } = require("../controllers/Transaction.controller");
+const { protect } = require("../middlewares/Auth");
 
 const Router = express.Router();
 
-Router.route("/").post(postTransaction).get(getAllTransactions);
+Router.route("/")
+  .post(protect, postTransaction)
+  .get(protect, getAllTransactions);
 Router.route("/:id")
-  .get(getOneTransaction)
-  .put(updateOneTransaction)
-  .delete(deleteOneTransaction);
+  .get(protect, getOneTransaction)
+  .put(protect, updateOneTransaction)
+  .delete(protect, deleteOneTransaction);
 
-Router.route("/incomes").get(getIncomes);
-Router.route("/expenses").get(getExpenses);
+Router.route("/incomes").get(protect, getIncomes);
+Router.route("/expenses").get(protect, getExpenses);
+
+// Router.route("/").post(postTransaction).get(getAllTransactions);
+// Router.route("/:id")
+//   .get(getOneTransaction)
+//   .put(updateOneTransaction)
+//   .delete(deleteOneTransaction);
+
+// Router.route("/incomes").get(getIncomes);
+// Router.route("/expenses").get(getExpenses);
 
 module.exports = Router;

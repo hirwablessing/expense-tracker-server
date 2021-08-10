@@ -12,32 +12,31 @@ exports.protect = asyncHandler(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-
   if (!token) {
     return next(
-      new ErrorResponse(`Not authorized to access this service`, 401)
+      new ErrorResponse(`Not authorized to access this service.`, 401)
     );
   }
 
   try {
+    console.log("try block", token, " ", process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log(decoded);
-    if (!decoded.id) {
+    if (!decoded._id) {
       return next(
-        new ErrorResponse(`Not authorized to access this service`, 401)
+        new ErrorResponse(`Not authorized to access this service.`, 401)
       );
     }
-    req.user = await UserModel.findById(decoded.id);
+    req.user = await UserModel.findById(decoded._id);
     if (!req.user._id) {
       return next(
-        new ErrorResponse("Not Authorized to access this  service", 401)
+        new ErrorResponse("Not Authorized to access this  service.", 401)
       );
+    } else {
+      next();
     }
-    next();
   } catch (error) {
-    return next(
-      new ErrorResponse(`Not authorized to access this service`, 401)
-    );
+    // console.log("error: ", error);
+    return next(error);
   }
 });
