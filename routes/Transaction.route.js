@@ -8,6 +8,7 @@ const {
   getTotalExpenses,
   getTotalIncomes,
   getTotalTransactions,
+  getTotalIncomesByMonth,
 } = require("../controllers/Transaction.controller");
 const { protect } = require("../middlewares/Auth");
 
@@ -17,6 +18,7 @@ Router.route("/")
   .post(protect, postTransaction)
   .get(protect, getAllTransactions);
 Router.route("/incomes").get(protect, getTotalIncomes);
+Router.route("/incomes/total-month").get(protect, getTotalIncomesByMonth);
 Router.route("/expenses").get(protect, getTotalExpenses);
 Router.route("/total").get(protect, getTotalTransactions);
 Router.route("/:id")
