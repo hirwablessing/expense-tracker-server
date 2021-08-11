@@ -34,10 +34,18 @@ const getTotalIncomes = asyncHandler(async (req, res, next) => {
   if (!incomes) {
     return next(new ErrorResponse("Getting incomes failed."));
   }
-  res.json({
-    success: true,
-    data: incomes.total,
-  });
+
+  if (incomes.length < 1) {
+    return res.json({
+      success: true,
+      data: 0,
+    });
+  } else {
+    return res.json({
+      success: true,
+      data: incomes[0].total,
+    });
+  }
 });
 
 const getTotalExpenses = asyncHandler(async (req, res, next) => {
@@ -49,10 +57,18 @@ const getTotalExpenses = asyncHandler(async (req, res, next) => {
   if (!expenses) {
     return next(new ErrorResponse("Getting incomes failed."));
   }
-  res.json({
-    success: true,
-    data: expenses.total,
-  });
+
+  if (expenses.length < 1) {
+    return res.json({
+      success: true,
+      data: 0,
+    });
+  } else {
+    return res.json({
+      success: true,
+      data: expenses[0].total,
+    });
+  }
 });
 
 const getOneTransaction = asyncHandler(async (req, res, next) => {
