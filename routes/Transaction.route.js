@@ -7,6 +7,7 @@ const {
   deleteOneTransaction,
   getTotalExpenses,
   getTotalIncomes,
+  getTotalTransactions,
 } = require("../controllers/Transaction.controller");
 const { protect } = require("../middlewares/Auth");
 
@@ -17,6 +18,7 @@ Router.route("/")
   .get(protect, getAllTransactions);
 Router.route("/incomes").get(protect, getTotalIncomes);
 Router.route("/expenses").get(protect, getTotalExpenses);
+Router.route("/total").get(protect, getTotalTransactions);
 Router.route("/:id")
   .get(protect, getOneTransaction)
   .put(protect, updateOneTransaction)

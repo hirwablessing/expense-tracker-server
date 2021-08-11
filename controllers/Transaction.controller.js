@@ -43,7 +43,7 @@ const getTotalIncomes = asyncHandler(async (req, res, next) => {
   } else {
     return res.json({
       success: true,
-      data: incomes[0].total,
+      data: parseInt(incomes[0].total),
     });
   }
 });
@@ -66,7 +66,32 @@ const getTotalExpenses = asyncHandler(async (req, res, next) => {
   } else {
     return res.json({
       success: true,
-      data: expenses[0].total,
+      data: parseInt(expenses[0].total),
+    });
+  }
+});
+
+const getTotalTransactions = asyncHandler(async (req, res, next) => {
+  let transactions = await Transaction.aggregate([
+    { $match: { user: req.user._id } },
+    { $group: { _id: null, total: { $sum: "$amount" } } },
+  ]);
+
+  console.log(transactions);
+
+  if (!transactions) {
+    return next(new ErrorResponse("Getting incomes failed."));
+  }
+
+  if (transactions.length < 1) {
+    return res.json({
+      success: true,
+      data: 0,
+    });
+  } else {
+    return res.json({
+      success: true,
+      data: parseInt(transactions[0].total),
     });
   }
 });
@@ -123,6 +148,7 @@ module.exports = {
   getAllTransactions,
   getTotalIncomes,
   getTotalExpenses,
+  getTotalTransactions,
   getOneTransaction,
   updateOneTransaction,
   deleteOneTransaction,
