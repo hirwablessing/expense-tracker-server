@@ -9,6 +9,8 @@ const {
   getTotalIncomes,
   getTotalTransactions,
   getTotalIncomesByMonth,
+  getTotalExpensesByMonth,
+  getHighestExpense,
 } = require("../controllers/Transaction.controller");
 const { protect } = require("../middlewares/Auth");
 
@@ -20,19 +22,12 @@ Router.route("/")
 Router.route("/incomes").get(protect, getTotalIncomes);
 Router.route("/incomes/total-month").get(protect, getTotalIncomesByMonth);
 Router.route("/expenses").get(protect, getTotalExpenses);
+Router.route("/expenses/highest").get(protect, getHighestExpense);
+Router.route("/expenses/total-month").get(protect, getTotalExpensesByMonth);
 Router.route("/total").get(protect, getTotalTransactions);
 Router.route("/:id")
   .get(protect, getOneTransaction)
   .put(protect, updateOneTransaction)
   .delete(protect, deleteOneTransaction);
-
-// Router.route("/").post(postTransaction).get(getAllTransactions);
-// Router.route("/:id")
-//   .get(getOneTransaction)
-//   .put(updateOneTransaction)
-//   .delete(deleteOneTransaction);
-
-// Router.route("/incomes").get(getTotalIncomes);
-// Router.route("/expenses").get(getTotalExpenses);
 
 module.exports = Router;
