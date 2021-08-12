@@ -112,11 +112,19 @@ const getTotalTransactions = asyncHandler(async (req, res, next) => {
 });
 
 const getTotalIncomesByMonth = asyncHandler(async (req, res, next) => {
-  let transactions = await Transaction.find({}, { note: 1, _id: 0 })
-    .sort({ amount: -1 })
-    .limit(1);
-
-  console.log(transactions);
+  let transactions = await Transaction.aggregate([
+    {
+      $match: { user: req.user._id },
+    },
+    {
+      $group: {
+        _id: {
+          month: { $month: "$date" },
+        },
+        total_income_month: { $sum: "$amount" },
+      },
+    },
+  ]);
 
   if (!transactions) {
     return next(new ErrorResponse("Getting incomes failed."));
@@ -201,6 +209,47 @@ const getOneTransaction = asyncHandler(async (req, res, next) => {
   });
 });
 
+const getTotalTransactionsByMonth = asyncHandler(async (req, res, next) => {
+  let transactions = await Transaction.aggregate([
+    {
+      $match: { user: req.user._id },
+    },
+    {
+      $group: {
+        _id: {
+          month: { $month: "$date" },
+        },
+        total_transactions_month: { $sum: "$amount" },
+      },
+    },
+  ]);
+
+  if (!transactions) {
+    return next(new ErrorResponse("Something went wrong."));
+  }
+
+  if (transactions.length < 1) {
+    return res.json({
+      success: true,
+      data: 0,
+    });
+  } else {
+    let newArr = [],
+      newObj = {};
+    transactions.map((trans) => {
+      newObj = {
+        month: trans._id.month,
+        total: parseInt(trans.total_transactions_month),
+      };
+      newArr.push(newObj);
+    });
+    return res.json({
+      success: true,
+      data: newArr,
+    });
+  }
+});
+
 const updateOneTransaction = asyncHandler(async (req, res, next) => {
   let updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: req.params.id, user: req.user._id },
@@ -243,5 +292,6 @@ module.exports = {
   getOneTransaction,
   updateOneTransaction,
   deleteOneTransaction,
+  getTotalTransactionsByMonth,
   getHighestExpense,
 };

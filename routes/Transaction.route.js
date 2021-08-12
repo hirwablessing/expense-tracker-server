@@ -11,6 +11,7 @@ const {
   getTotalIncomesByMonth,
   getTotalExpensesByMonth,
   getHighestExpense,
+  getTotalTransactionsByMonth,
 } = require("../controllers/Transaction.controller");
 const { protect } = require("../middlewares/Auth");
 
@@ -19,6 +20,8 @@ const Router = express.Router();
 Router.route("/")
   .post(protect, postTransaction)
   .get(protect, getAllTransactions);
+
+Router.route("/total-month").get(protect, getTotalTransactionsByMonth);
 Router.route("/incomes").get(protect, getTotalIncomes);
 Router.route("/incomes/total-month").get(protect, getTotalIncomesByMonth);
 Router.route("/expenses").get(protect, getTotalExpenses);
